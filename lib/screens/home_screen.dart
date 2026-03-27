@@ -3,27 +3,18 @@ import 'package:skillbridge_ecommerce_project/Repostitory/product_repository.dar
 import 'package:skillbridge_ecommerce_project/components/catagory_widget.dart';
 import 'package:skillbridge_ecommerce_project/components/product_card_widget.dart';
 import 'package:skillbridge_ecommerce_project/models/products_model.dart';
+import 'package:skillbridge_ecommerce_project/product_provider.dart';
 import 'package:skillbridge_ecommerce_project/screens/product_detail_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HomeScreen extends StatefulWidget {
+
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final products = ref.watch(productProvider);
 
-class _HomeScreenState extends State<HomeScreen> {
-  ProductRepository productRepository = ProductRepository();
-  late Future<List<Product>> products;
-
-  @override
-  void initState() {
-    super.initState();
-    products = productRepository.getProducts();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       drawer: Container(),
       appBar: AppBar(
@@ -35,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: [
             SizedBox(
-              height: 120, // 👈 REQUIRED
+              height: 120,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
@@ -47,29 +38,11 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
 
-            /// 🔥 FutureBuilder FIXED
             Expanded(
-              child: FutureBuilder<List<Product>>(
-                future: products,
-                builder: (context, snapshot) {
-
-                  // Loading
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-
-                  // Error
-                  if (snapshot.hasError) {
-                    return Center(child: Text("Error: ${snapshot.error}"));
-                  }
-
-                  // No data
-                  if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Center(child: Text("No products found"));
-                  }
-
-                  final productList = snapshot.data!;
-
+              child: products.when(
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (e, _) => Center(child: Text("Error: $e")),
+                data: (productList) {
                   return GridView.builder(
                     itemCount: productList.length,
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
