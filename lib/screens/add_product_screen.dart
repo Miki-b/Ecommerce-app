@@ -4,16 +4,18 @@ import 'package:skillbridge_ecommerce_project/Repostitory/product_repository.dar
 import 'package:skillbridge_ecommerce_project/components/product_card_widget.dart';
 import 'package:skillbridge_ecommerce_project/models/products_model.dart';
 
-class AddProductScreen extends StatefulWidget {
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:skillbridge_ecommerce_project/product_provider.dart';
+
+class AddProductScreen extends ConsumerStatefulWidget {
   const AddProductScreen({super.key});
 
   @override
-  State<AddProductScreen> createState() => _AddProductScreenState();
+  ConsumerState<AddProductScreen> createState() => _AddProductScreenState();
 }
 
-class _AddProductScreenState extends State<AddProductScreen> {
-  ProductRepository productRepository = ProductRepository();
-  late Product product;
+class _AddProductScreenState extends ConsumerState<AddProductScreen> {
+
   final _formKey = GlobalKey<FormState>();
 
   final titleController = TextEditingController();
@@ -48,30 +50,23 @@ class _AddProductScreenState extends State<AddProductScreen> {
     );
   }
 
-  void submitProduct() {
+  void submitProduct() async {
     if (_formKey.currentState!.validate()) {
-      final product = {
-        "id": 0,
-        "title": titleController.text,
-        "price": double.parse(priceController.text),
-        "description": descriptionController.text,
-        "category": categoryController.text,
-        "image": imageController.text,
-      };
-
-      productRepository.createProduct(
-          Product(
-              productId: 25,
-              productTitle: titleController.text,
-              productPrice: double.parse(priceController.text),
-              productDescription: descriptionController.text,
-              productCategory: categoryController.text,
-              productImage: imageController.text,
-
-          ));
 
 
-      print(product); // 🔥 Replace with API call
+        final product = Product(
+          productId: 0,
+          productTitle: titleController.text,
+          productPrice: double.parse(priceController.text),
+          productDescription: descriptionController.text,
+          productCategory: categoryController.text,
+          productImage: imageController.text,
+        );
+
+
+        await ref.read(productProvider.notifier).addProduct(product);
+
+       // 🔥 Replace with API call
     }
   }
 

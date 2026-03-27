@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../models/products_model.dart';
+import 'package:skillbridge_ecommerce_project/cart_provider.dart';
+import 'package:skillbridge_ecommerce_project/models/products_model.dart';
+import 'package:skillbridge_ecommerce_project/screens/cart_screen.dart';
 
-class ProductDetailScreen extends StatelessWidget {
+
+class ProductDetailScreen extends ConsumerWidget {
   final Product product;
 
   const ProductDetailScreen({super.key, required this.product});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final Color primaryColor = const Color(0xFF5AA5D4);
+
     return Scaffold(
       backgroundColor: const Color(0xFFECF3F4),
 
@@ -18,6 +24,22 @@ class ProductDetailScreen extends StatelessWidget {
         title: const Text("Product Details"),
         centerTitle: true,
         iconTheme: const IconThemeData(color: Colors.black),
+        actions: [
+          GestureDetector(
+
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => CartScreen(),
+                  ),
+                );
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Icon(Icons.shopping_cart),
+              ))
+        ],
       ),
 
       body: Column(
@@ -69,12 +91,13 @@ class ProductDetailScreen extends StatelessWidget {
                     style: GoogleFonts.montserrat(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF5AA5d4),
+                      color: primaryColor,
                     ),
                   ),
 
                   const SizedBox(height: 10),
 
+                  /// ⭐ Rating (optional but nice)
 
 
                   const SizedBox(height: 15),
@@ -111,30 +134,38 @@ class ProductDetailScreen extends StatelessWidget {
                     width: double.infinity,
                     height: 50,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        ref.read(cartProvider.notifier).addToCart(product);
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("Added to cart 🛒"),
+                            duration: Duration(seconds: 2),
+                          ),
+                        );
+                      },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF5AA5d4),
+                        backgroundColor: primaryColor,
                         foregroundColor: Colors.white,
                         elevation: 3,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
-
                       ),
                       child: Text(
                         "Add to Cart",
                         style: GoogleFonts.montserrat(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white
+                          color: Colors.white,
                         ),
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );
