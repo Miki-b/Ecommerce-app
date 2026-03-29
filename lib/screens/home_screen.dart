@@ -56,12 +56,12 @@ class HomeScreen extends ConsumerWidget {
 
                       return GestureDetector(
                         onTap: (){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => ProductDetailScreen(product: product),
-                            ),
-                          );
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (_) => ProductDetailScreen(product: product),
+                          //   ),
+                          // );
                         }
                         ,
                         child: ProductCardWidget(
