@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:skillbridge_ecommerce_project/cart_provider.dart';
+import 'package:skillbridge_ecommerce_project/controllers/cart_provider.dart';
 
 class CartScreen extends ConsumerWidget {
   const CartScreen({super.key});
@@ -162,10 +162,8 @@ class CartScreen extends ConsumerWidget {
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content: Text("Checkout coming soon 🚀")),
-                      );
+                      Navigator.pushNamed(context, '/paymentScreen');
+
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: primaryColor,

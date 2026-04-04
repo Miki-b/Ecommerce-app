@@ -7,7 +7,7 @@ class ProductRepository{
   //get
   Future<List<Product>> getProducts() async {
     final response = await get(
-      Uri.parse("https://fakestoreapi.com/products"),
+      Uri.parse("https://api.escuelajs.co/api/v1/products"),
     );
 
     if (response.statusCode == 200) {

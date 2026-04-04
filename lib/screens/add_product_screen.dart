@@ -1,11 +1,12 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:skillbridge_ecommerce_project/Repostitory/product_repository.dart';
 import 'package:skillbridge_ecommerce_project/components/product_card_widget.dart';
+import 'package:skillbridge_ecommerce_project/controllers/product_provider.dart';
 import 'package:skillbridge_ecommerce_project/models/products_model.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:skillbridge_ecommerce_project/product_provider.dart';
 
 class AddProductScreen extends ConsumerStatefulWidget {
   const AddProductScreen({super.key});
@@ -15,6 +16,9 @@ class AddProductScreen extends ConsumerStatefulWidget {
 }
 
 class _AddProductScreenState extends ConsumerState<AddProductScreen> {
+
+
+
 
   final _formKey = GlobalKey<FormState>();
 
@@ -55,12 +59,16 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
 
 
         final product = Product(
-          productId: 0,
-          productTitle: titleController.text,
-          productPrice: double.parse(priceController.text),
-          productDescription: descriptionController.text,
-          productCategory: categoryController.text,
-          productImage: imageController.text,
+          id: 0,
+          title: titleController.text,
+          price: double.parse(priceController.text),
+          description: descriptionController.text,
+          //productCategory: categoryController.text,
+          images: [imageController.text],
+          category: ,
+          slug: '',
+          updatedAt: null,
+          creationAt: null,
         );
 
 
@@ -72,6 +80,8 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final products = ref.watch(productProvider);
+    List<String> category = products
     return Scaffold(
       backgroundColor: const Color(0xFFECF3F4),
 
@@ -124,6 +134,31 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
               const SizedBox(height: 15),
 
               /// Category
+              DropdownButtonFormField<String>(
+                // 3️⃣ Items
+                items: category.map((item) {
+                  return DropdownMenuItem<String>(
+                    value: item,
+                    child: Text(item),
+                  );
+                }).toList(),
+
+                // 4️⃣ Currently selected value
+                value: selectedItem,
+
+                // 5️⃣ Callback when value changes
+                onChanged: (value) {
+                  setState(() {
+                    selectedItem = value;
+                  });
+                },
+
+                // 6️⃣ Optional: decoration
+                decoration: InputDecoration(
+                  labelText: 'Select Category',
+                  border: OutlineInputBorder(),
+                ),
+              ),
               TextFormField(
                 controller: categoryController,
                 decoration: inputStyle("Category"),

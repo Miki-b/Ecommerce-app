@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:skillbridge_ecommerce_project/Repostitory/product_repository.dart';
 import 'package:skillbridge_ecommerce_project/components/catagory_widget.dart';
 import 'package:skillbridge_ecommerce_project/components/product_card_widget.dart';
-import 'package:skillbridge_ecommerce_project/models/products_model.dart';
-import 'package:skillbridge_ecommerce_project/product_provider.dart';
-import 'package:skillbridge_ecommerce_project/screens/product_detail_screen.dart';
+import 'package:skillbridge_ecommerce_project/controllers/product_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 

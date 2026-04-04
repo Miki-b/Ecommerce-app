@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skillbridge_ecommerce_project/screens/home_screen.dart';
 import 'package:skillbridge_ecommerce_project/screens/main_screen.dart';
+import 'package:skillbridge_ecommerce_project/screens/payment_screen.dart';
 import 'package:skillbridge_ecommerce_project/screens/splash_screen.dart';
 
 
@@ -25,7 +26,8 @@ class MyApp extends StatelessWidget {
       routes:{
         '/':(context)=> SplashScreen(),
         '/mainScreen':(context)=> MainScreen(),
-        '/home': (context)=> HomeScreen()
+        '/home': (context)=> HomeScreen(),
+        '/paymentScreen' : (context)=> PaymentScreen(),
       },
       debugShowCheckedModeBanner: false,
     );
