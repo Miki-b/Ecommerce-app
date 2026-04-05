@@ -1,30 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:skillbridge_ecommerce_project/controllers/cart_provider.dart';
 import 'package:skillbridge_ecommerce_project/screens/add_product_screen.dart';
+import 'package:skillbridge_ecommerce_project/screens/product_detail_screen.dart';
+import 'package:skillbridge_ecommerce_project/screens/cart_screen.dart';
 import 'package:skillbridge_ecommerce_project/screens/home_screen.dart';
 
-
+void main() {
+  runApp(const ProviderScope(child: MainScreen()));
+}
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const BottomNavWrapper(),
+      home: BottomNavWrapper(),
     );
   }
 }
 
-class BottomNavWrapper extends StatefulWidget {
+class BottomNavWrapper extends ConsumerStatefulWidget {
   const BottomNavWrapper({super.key});
 
   @override
-  State<BottomNavWrapper> createState() => _BottomNavWrapperState();
+  ConsumerState<BottomNavWrapper> createState() => _BottomNavWrapperState();
 }
 
-class _BottomNavWrapperState extends State<BottomNavWrapper> {
+class _BottomNavWrapperState extends ConsumerState<BottomNavWrapper> {
   int _selectedIndex = 0;
 
   final Color primaryColor = const Color(0xFF5AA5D4);
@@ -32,7 +38,7 @@ class _BottomNavWrapperState extends State<BottomNavWrapper> {
   final List<Widget> _screens = const [
     HomeScreen(),
     AddProductScreen(),
-    Center(child: Text('profile'))
+    Center(child: Text('Profile')),
   ];
 
   void _onItemTapped(int index) {
@@ -43,8 +49,68 @@ class _BottomNavWrapperState extends State<BottomNavWrapper> {
 
   @override
   Widget build(BuildContext context) {
+    // Watch cart to get item count for badge
+    final cartItems = ref.watch(cartProvider);
+    final cartCount = cartItems.fold(0, (sum, item) => sum + item.quantity);
+
     return Scaffold(
       backgroundColor: const Color(0xFFECF3F4),
+      appBar: AppBar(
+        title: Text(
+          "E‑commerce",
+          style: TextStyle(
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.bold,
+            color: Colors.black87,
+          ),
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: false,
+        actions: [
+          // Cart icon with badge
+          Stack(
+            clipBehavior: Clip.none,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.shopping_cart_outlined, color: Colors.black87),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const CartScreen()),
+                  );
+                },
+              ),
+              if (cartCount > 0)
+                Positioned(
+                  right: 8,
+                  top: 8,
+                  child: Container(
+                    padding: const EdgeInsets.all(2),
+                    decoration: BoxDecoration(
+                      color: primaryColor,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    constraints: const BoxConstraints(
+                      minWidth: 16,
+                      minHeight: 16,
+                    ),
+                    child: Text(
+                      cartCount > 99 ? '99+' : cartCount.toString(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+            ],
+          ),
+          const SizedBox(width: 8),
+        ],
+      ),
       body: _screens[_selectedIndex],
       bottomNavigationBar: Stack(
         clipBehavior: Clip.none,
@@ -73,9 +139,7 @@ class _BottomNavWrapperState extends State<BottomNavWrapper> {
                     size: 38,
                   ),
                 ),
-
-                SizedBox(width: 60), // Space for middle button
-
+                const SizedBox(width: 60), // Space for middle button
                 // Right icon - Profile
                 IconButton(
                   onPressed: () => _onItemTapped(2),
@@ -88,7 +152,6 @@ class _BottomNavWrapperState extends State<BottomNavWrapper> {
               ],
             ),
           ),
-
           // Middle Circular Add Button
           Positioned(
             top: -30,
@@ -107,7 +170,7 @@ class _BottomNavWrapperState extends State<BottomNavWrapper> {
                       BoxShadow(
                         color: Colors.black26,
                         blurRadius: 6,
-                        offset: Offset(0, 3),
+                        offset: const Offset(0, 3),
                       ),
                     ],
                   ),

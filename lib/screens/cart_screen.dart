@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:skillbridge_ecommerce_project/controllers/cart_provider.dart';
+// import 'package:skillbridge_ecommerce_project/models/cart_item.dart';
 
 class CartScreen extends ConsumerWidget {
   const CartScreen({super.key});

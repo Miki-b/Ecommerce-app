@@ -3,8 +3,8 @@ import 'package:skillbridge_ecommerce_project/Repostitory/product_repository.dar
 import 'package:skillbridge_ecommerce_project/components/catagory_widget.dart';
 import 'package:skillbridge_ecommerce_project/components/product_card_widget.dart';
 import 'package:skillbridge_ecommerce_project/controllers/product_provider.dart';
+import 'package:skillbridge_ecommerce_project/screens/product_detail_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -14,10 +14,7 @@ class HomeScreen extends ConsumerWidget {
     final products = ref.watch(productProvider);
 
     return Scaffold(
-      drawer: Container(),
-      appBar: AppBar(
-        title: const Text("Hello User"),
-      ),
+      // Removed AppBar here to avoid duplication – MainScreen already provides one
       backgroundColor: const Color(0xFFECF3F4),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
@@ -35,7 +32,6 @@ class HomeScreen extends ConsumerWidget {
                 ],
               ),
             ),
-
             Expanded(
               child: products.when(
                 loading: () => const Center(child: CircularProgressIndicator()),
@@ -51,21 +47,20 @@ class HomeScreen extends ConsumerWidget {
                     ),
                     itemBuilder: (context, i) {
                       final product = productList[i];
-
                       return GestureDetector(
-                        onTap: (){
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (_) => ProductDetailScreen(product: product),
-                          //   ),
-                          // );
-                        }
-                        ,
+                        onTap: () {
+                          // ✅ UNCOMMENTED – now navigates to detail screen
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => ProductDetailScreen(product: product),
+                            ),
+                          );
+                        },
                         child: ProductCardWidget(
-                          imagePath: product.productImage,
-                          productName: product.productTitle,
-                          productPrice: product.productPrice,
+                          imagePath: product.images.isNotEmpty ? product.images.first : '',
+                          productName: product.title,
+                          productPrice: product.price,
                         ),
                       );
                     },

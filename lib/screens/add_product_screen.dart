@@ -1,12 +1,9 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:skillbridge_ecommerce_project/Repostitory/product_repository.dart';
-import 'package:skillbridge_ecommerce_project/components/product_card_widget.dart';
-import 'package:skillbridge_ecommerce_project/controllers/product_provider.dart';
-import 'package:skillbridge_ecommerce_project/models/products_model.dart';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:skillbridge_ecommerce_project/controllers/product_provider.dart';
+import 'package:skillbridge_ecommerce_project/models/category_model.dart';
+import 'package:skillbridge_ecommerce_project/models/products_model.dart';
 
 class AddProductScreen extends ConsumerStatefulWidget {
   const AddProductScreen({super.key});
@@ -16,17 +13,26 @@ class AddProductScreen extends ConsumerStatefulWidget {
 }
 
 class _AddProductScreenState extends ConsumerState<AddProductScreen> {
-
-
-
-
   final _formKey = GlobalKey<FormState>();
 
   final titleController = TextEditingController();
   final priceController = TextEditingController();
   final descriptionController = TextEditingController();
-  final categoryController = TextEditingController();
   final imageController = TextEditingController();
+
+  // Dropdown selected value
+  String? selectedCategory;
+
+  // List of available categories (you can fetch from API or hardcode)
+  final List<String> categoryOptions = [
+    "Electronics",
+    "Clothing",
+    "Books",
+    "Home & Garden",
+    "Sports",
+    "Toys",
+    "Other",
+  ];
 
   final Color primaryColor = const Color(0xFF5AA5D4);
 
@@ -35,7 +41,6 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
     titleController.dispose();
     priceController.dispose();
     descriptionController.dispose();
-    categoryController.dispose();
     imageController.dispose();
     super.dispose();
   }
@@ -54,37 +59,43 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
     );
   }
 
-  void submitProduct() async {
+  Future<void> submitProduct() async {
     if (_formKey.currentState!.validate()) {
-
-
-        final product = Product(
-          id: 0,
-          title: titleController.text,
-          price: double.parse(priceController.text),
-          description: descriptionController.text,
-          //productCategory: categoryController.text,
-          images: [imageController.text],
-          category: ,
-          slug: '',
-          updatedAt: null,
-          creationAt: null,
+      if (selectedCategory == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Please select a category")),
         );
+        return;
+      }
 
+      // final product = Product(
+      //   id: 0, // Will be assigned by backend
+      //   title: titleController.text,
+      //   price: double.parse(priceController.text),
+      //   description: descriptionController.text,
+      //   images: [imageController.text],
+      //   category: Category(id: 0, name: selectedCategory!, image: ''), // if Category expects id, name, image
+      //   updatedAt: null,
+      //   creationAt: null,
+      // );
 
-        await ref.read(productProvider.notifier).addProduct(product);
+      // Call the provider to add product
+      // await ref.read(productProvider.notifier).addProduct(product);
 
-       // 🔥 Replace with API call
+      // Show success and go back
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Product added successfully!")),
+        );
+        Navigator.pop(context);
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final products = ref.watch(productProvider);
-    List<String> category = products
     return Scaffold(
       backgroundColor: const Color(0xFFECF3F4),
-
       appBar: AppBar(
         title: Text(
           "Add Product",
@@ -93,92 +104,83 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-
       body: Padding(
         padding: const EdgeInsets.all(15),
         child: Form(
           key: _formKey,
           child: ListView(
             children: [
-
-              /// Title
+              // Title
               TextFormField(
                 controller: titleController,
                 decoration: inputStyle("Product Title"),
                 validator: (value) =>
-                value!.isEmpty ? "Enter product title" : null,
+                value == null || value.isEmpty ? "Enter product title" : null,
               ),
-
               const SizedBox(height: 15),
 
-              /// Price
+              // Price
               TextFormField(
                 controller: priceController,
                 keyboardType: TextInputType.number,
                 decoration: inputStyle("Price"),
                 validator: (value) =>
-                value!.isEmpty ? "Enter price" : null,
+                value == null || value.isEmpty ? "Enter price" : null,
               ),
-
               const SizedBox(height: 15),
 
-              /// Description
+              // Description
               TextFormField(
                 controller: descriptionController,
                 maxLines: 4,
                 decoration: inputStyle("Description"),
                 validator: (value) =>
-                value!.isEmpty ? "Enter description" : null,
+                value == null || value.isEmpty ? "Enter description" : null,
               ),
-
               const SizedBox(height: 15),
 
-              /// Category
+              // Category Dropdown (replaces the old TextFormField)
               DropdownButtonFormField<String>(
-                // 3️⃣ Items
-                items: category.map((item) {
+                value: selectedCategory,
+                hint: Text("Select Category", style: GoogleFonts.montserrat()),
+                items: categoryOptions.map((category) {
                   return DropdownMenuItem<String>(
-                    value: item,
-                    child: Text(item),
+                    value: category,
+                    child: Text(category, style: GoogleFonts.montserrat()),
                   );
                 }).toList(),
-
-                // 4️⃣ Currently selected value
-                value: selectedItem,
-
-                // 5️⃣ Callback when value changes
                 onChanged: (value) {
                   setState(() {
-                    selectedItem = value;
+                    selectedCategory = value;
                   });
                 },
-
-                // 6️⃣ Optional: decoration
+                validator: (value) =>
+                value == null ? "Please select a category" : null,
                 decoration: InputDecoration(
-                  labelText: 'Select Category',
-                  border: OutlineInputBorder(),
+                  labelText: "Category",
+                  labelStyle: GoogleFonts.montserrat(),
+                  filled: true,
+                  fillColor: Colors.white,
+                  contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
+                    borderSide: BorderSide.none,
+                  ),
                 ),
               ),
-              TextFormField(
-                controller: categoryController,
-                decoration: inputStyle("Category"),
-                validator: (value) =>
-                value!.isEmpty ? "Enter category" : null,
-              ),
-
               const SizedBox(height: 15),
 
-              /// Image URL
+              // Image URL
               TextFormField(
                 controller: imageController,
                 decoration: inputStyle("Image URL"),
                 validator: (value) =>
-                value!.isEmpty ? "Enter image URL" : null,
+                value == null || value.isEmpty ? "Enter image URL" : null,
               ),
-
               const SizedBox(height: 25),
 
-              /// Submit Button
+              // Submit Button
               SizedBox(
                 height: 50,
                 child: ElevatedButton(
@@ -195,7 +197,7 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
                     style: GoogleFonts.montserrat(
                       fontWeight: FontWeight.bold,
                       fontSize: 14,
-                      color: Colors.white
+                      color: Colors.white,
                     ),
                   ),
                 ),

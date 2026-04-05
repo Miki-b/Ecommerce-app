@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:skillbridge_ecommerce_project/controllers/cart_provider.dart';
+import 'package:skillbridge_ecommerce_project/models/cart_item.dart';
 import 'package:skillbridge_ecommerce_project/models/products_model.dart';
 import 'package:skillbridge_ecommerce_project/screens/cart_screen.dart';
 
@@ -17,7 +18,6 @@ class ProductDetailScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: const Color(0xFFECF3F4),
-
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
@@ -26,26 +26,22 @@ class ProductDetailScreen extends ConsumerWidget {
         iconTheme: const IconThemeData(color: Colors.black),
         actions: [
           GestureDetector(
-
-              onTap: (){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => CartScreen(),
-                  ),
-                );
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Icon(Icons.shopping_cart),
-              ))
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const CartScreen()),
+              );
+            },
+            child: const Padding(
+              padding: EdgeInsets.all(15.0),
+              child: Icon(Icons.shopping_cart),
+            ),
+          )
         ],
       ),
-
       body: Column(
         children: [
-
-          /// 🔥 IMAGE SECTION
+          // 🔥 IMAGE SECTION
           Container(
             margin: const EdgeInsets.all(15),
             padding: const EdgeInsets.all(20),
@@ -55,54 +51,44 @@ class ProductDetailScreen extends ConsumerWidget {
               borderRadius: BorderRadius.circular(20),
             ),
             child: Image.network(
-              product.productImage,
+              product.images.isNotEmpty ? product.images.first : '',
               fit: BoxFit.contain,
+              errorBuilder: (context, error, stackTrace) =>
+              const Icon(Icons.broken_image, size: 80),
             ),
           ),
-
-          /// 🔥 DETAILS SECTION
+          // 🔥 DETAILS SECTION
           Expanded(
             child: Container(
               padding: const EdgeInsets.all(20),
               decoration: const BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(25),
-                ),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
-                  /// Title
+                  // Title
                   Text(
-                    product.productTitle,
+                    product.title,
                     style: GoogleFonts.montserrat(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-
                   const SizedBox(height: 10),
-
-                  /// Price
+                  // Price
                   Text(
-                    "\$${product.productPrice.toStringAsFixed(2)}",
+                    "\$${product.price.toStringAsFixed(2)}",
                     style: GoogleFonts.montserrat(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                       color: primaryColor,
                     ),
                   ),
-
                   const SizedBox(height: 10),
-
-                  /// ⭐ Rating (optional but nice)
-
-
                   const SizedBox(height: 15),
-
-                  /// Description Title
+                  // Description Title
                   Text(
                     "Description",
                     style: GoogleFonts.montserrat(
@@ -110,14 +96,12 @@ class ProductDetailScreen extends ConsumerWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-
                   const SizedBox(height: 8),
-
-                  /// Description
+                  // Description
                   Expanded(
                     child: SingleChildScrollView(
                       child: Text(
-                        product.productDescription,
+                        product.description,
                         style: GoogleFonts.montserrat(
                           fontSize: 13,
                           height: 1.5,
@@ -126,17 +110,24 @@ class ProductDetailScreen extends ConsumerWidget {
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 15),
-
-                  /// 🔥 ADD TO CART BUTTON
+                  // 🔥 ADD TO CART BUTTON
                   SizedBox(
                     width: double.infinity,
                     height: 50,
                     child: ElevatedButton(
                       onPressed: () {
-                        ref.read(cartProvider.notifier).addToCart(product);
-
+                        // Convert Product to CartItem (all fields non‑nullable)
+                        final cartItem = CartItem(
+                          productId: product.id.toString(),
+                          productTitle: product.title,
+                          productPrice: product.price,
+                          productImage: product.images.isNotEmpty
+                              ? product.images.first
+                              : '',
+                          quantity: 1,
+                        );
+                        ref.read(cartProvider.notifier).addItem(cartItem);
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text("Added to cart 🛒"),
