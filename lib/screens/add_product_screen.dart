@@ -59,16 +59,16 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
 
 
         final product = Product(
-          id: 0,
-          title: titleController.text,
-          price: double.parse(priceController.text),
-          description: descriptionController.text,
+          productId: 0,
+          productTitle: titleController.text,
+          productPrice: double.parse(priceController.text),
+          productDescription: descriptionController.text,
           //productCategory: categoryController.text,
-          images: [imageController.text],
-          category: ,
-          slug: '',
-          updatedAt: null,
-          creationAt: null,
+          productImages: [imageController.text],
+          productCategory: ,
+          productSlug: '',
+          productCreationAt: null,
+          productUpdatedAt: null,
         );
 
 

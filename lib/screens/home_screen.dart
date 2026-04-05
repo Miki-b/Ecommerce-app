@@ -63,7 +63,7 @@ class HomeScreen extends ConsumerWidget {
                         }
                         ,
                         child: ProductCardWidget(
-                          imagePath: product.productImage,
+                          imagePath: product.productImages[0],
                           productName: product.productTitle,
                           productPrice: product.productPrice,
                         ),

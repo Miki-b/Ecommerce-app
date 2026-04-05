@@ -1,53 +1,53 @@
 import 'category_model.dart';
 
 class Product {
-  final int id;
-  final String title;
-  final String slug;
-  final double price;
-  final String description;
-  final List<String> images;
-  final Category category;
-  final DateTime creationAt;
-  final DateTime updatedAt;
+  final int productId;
+  final String productTitle;
+  final String productSlug;
+  final double productPrice;
+  final String productDescription;
+  final List<String> productImages;
+  final Category productCategory;
+  final DateTime productCreationAt;
+  final DateTime productUpdatedAt;
 
   Product({
-    required this.id,
-    required this.title,
-    required this.slug,
-    required this.price,
-    required this.description,
-    required this.images,
-    required this.category,
-    required this.creationAt,
-    required this.updatedAt,
+    required this.productId,
+    required this.productTitle,
+    required this.productSlug,
+    required this.productPrice,
+    required this.productCategory,
+    required this.productImages,
+    required this.productDescription,
+    required this.productCreationAt,
+    required this.productUpdatedAt,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
-      id: json['id'],
-      title: json['title'],
-      slug: json['slug'],
-      price: (json['price'] as num).toDouble(),
-      description: json['description'],
-      images: List<String>.from(json['images']),
-      category: Category.fromJson(json['category']),
-      creationAt: DateTime.parse(json['creationAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
+      productId: json['id'],
+      productTitle: json['title'],
+      productSlug: json['slug'],
+      productPrice: (json['price'] as num).toDouble(),
+      productDescription: json['description'],
+      productImages: List<String>.from(json['images']),
+      productCategory: Category.fromJson(json['category']),
+      productCreationAt: DateTime.parse(json['creationAt']),
+      productUpdatedAt: DateTime.parse(json['updatedAt']),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'title': title,
-      'slug': slug,
-      'price': price,
-      'description': description,
-      'images': images,
-      'category': category.toJson(),
-      'creationAt': creationAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
+      'id': productId,
+      'title': productTitle,
+      'slug': productSlug,
+      'price': productPrice,
+      'description': productDescription,
+      'images': productImages,
+      'category': productCategory.toJson(),
+      'creationAt': productCreationAt.toIso8601String(),
+      'updatedAt': productUpdatedAt.toIso8601String(),
     };
   }
 }
