@@ -27,14 +27,7 @@ class ProductDetailScreen extends ConsumerWidget {
         actions: [
           GestureDetector(
 
-              onTap: (){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => CartScreen(),
-                  ),
-                );
-              },
+
               child: Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: Icon(Icons.shopping_cart),
@@ -135,14 +128,7 @@ class ProductDetailScreen extends ConsumerWidget {
                     height: 50,
                     child: ElevatedButton(
                       onPressed: () {
-                        ref.read(cartProvider.notifier).addToCart(product);
 
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text("Added to cart 🛒"),
-                            duration: Duration(seconds: 2),
-                          ),
-                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: primaryColor,
