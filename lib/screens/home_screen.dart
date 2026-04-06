@@ -4,6 +4,7 @@ import 'package:skillbridge_ecommerce_project/components/catagory_widget.dart';
 import 'package:skillbridge_ecommerce_project/components/product_card_widget.dart';
 import 'package:skillbridge_ecommerce_project/controllers/product_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:skillbridge_ecommerce_project/screens/product_detail_screen.dart';
 
 
 class HomeScreen extends ConsumerWidget {
@@ -54,16 +55,16 @@ class HomeScreen extends ConsumerWidget {
 
                       return GestureDetector(
                         onTap: (){
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (_) => ProductDetailScreen(product: product),
-                          //   ),
-                          // );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => ProductDetailScreen(product: product),
+                            ),
+                          );
                         }
                         ,
                         child: ProductCardWidget(
-                          imagePath: product.productImages[0],
+                          imagePath: product.productImage,
                           productName: product.productTitle,
                           productPrice: product.productPrice,
                         ),

@@ -55,7 +55,7 @@ class ProductDetailScreen extends ConsumerWidget {
               borderRadius: BorderRadius.circular(20),
             ),
             child: Image.network(
-              product.productImages[0],
+              product.productImage,
               fit: BoxFit.contain,
             ),
           ),

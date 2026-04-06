@@ -11,10 +11,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title:  "gebeya app",
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
+    return Scaffold(
         backgroundColor: Color(0xFFECF3F4),
         body: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -53,8 +50,7 @@ class _SplashScreenState extends State<SplashScreen> {
             ],
           ),
         ),
-      ),
+      );
 
-    );
   }
 }
