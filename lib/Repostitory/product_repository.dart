@@ -25,7 +25,7 @@ class ProductRepository{
   //post
   Future<Product> createProduct(Product product) async {
     final response = await post(
-      Uri.parse("https://fakestoreapi.com/products"),
+      Uri.parse("https://fakestoreapi.com/products/${product.id}"),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode(product.toJson()),
     );
@@ -41,7 +41,7 @@ class ProductRepository{
   //update
   Future<Product> updateProduct(Product product) async {
     final response = await put(
-      Uri.parse("https://fakestoreapi.com/products/${product.productId}"),
+      Uri.parse("https://fakestoreapi.com/products/${product.id}"),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode(product.toJson()),
     );
