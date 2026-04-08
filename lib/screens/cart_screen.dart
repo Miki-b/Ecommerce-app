@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:skillbridge_ecommerce_project/controllers/auth_state.dart';
 import 'package:skillbridge_ecommerce_project/controllers/cart_provider.dart';
 
 class CartScreen extends ConsumerWidget {
@@ -162,7 +163,8 @@ class CartScreen extends ConsumerWidget {
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/paymentScreen');
+                      AuthWrapper();
+                      //Navigator.pushNamed(context, '/paymentScreen');
 
                     },
                     style: ElevatedButton.styleFrom(

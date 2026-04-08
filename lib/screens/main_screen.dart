@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:skillbridge_ecommerce_project/screens/add_product_screen.dart';
-import 'package:skillbridge_ecommerce_project/screens/home_screen.dart';
+import 'package:skillbridge_ecommerce_project/screens/tabs/add_product_screen.dart';
+import 'package:skillbridge_ecommerce_project/screens/tabs/home_screen.dart';
 
 
 
