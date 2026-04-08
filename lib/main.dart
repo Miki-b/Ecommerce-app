@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:skillbridge_ecommerce_project/screens/home_screen.dart';
 import 'package:skillbridge_ecommerce_project/screens/main_screen.dart';
 import 'package:skillbridge_ecommerce_project/screens/payment_screen.dart';
 import 'package:skillbridge_ecommerce_project/screens/splash_screen.dart';
+import 'package:skillbridge_ecommerce_project/screens/tabs/home_screen.dart';
 
 
 void main() {

@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:skillbridge_ecommerce_project/controllers/cart_provider.dart';
-import 'package:skillbridge_ecommerce_project/screens/add_product_screen.dart';
-import 'package:skillbridge_ecommerce_project/screens/product_detail_screen.dart';
-import 'package:skillbridge_ecommerce_project/screens/cart_screen.dart';
-import 'package:skillbridge_ecommerce_project/screens/home_screen.dart';
+import 'package:skillbridge_ecommerce_project/screens/tabs/add_product_screen.dart';
+import 'package:skillbridge_ecommerce_project/screens/tabs/home_screen.dart';
 
 void main() {
   runApp(const ProviderScope(child: MainScreen()));
