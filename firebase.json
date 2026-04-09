@@ -1,14 +1,1 @@
-{
-  "firestore": {
-    "database": "(default)",
-    "location": "africa-south1",
-    "rules": "firestore.rules",
-    "indexes": "firestore.indexes.json"
-  },
-  "storage": {
-    "rules": "storage.rules"
-  },
-  "database": {
-    "rules": "database.rules.json"
-  }
-}
+{"firestore":{"database":"(default)","location":"africa-south1","rules":"firestore.rules","indexes":"firestore.indexes.json"},"storage":{"rules":"storage.rules"},"database":{"rules":"database.rules.json"},"flutter":{"platforms":{"android":{"default":{"projectId":"ecommerce-app-234dd","appId":"1:746798883016:android:1fc3715b645bbf4f50c5fd","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"ecommerce-app-234dd","configurations":{"android":"1:746798883016:android:1fc3715b645bbf4f50c5fd","ios":"1:746798883016:ios:504908f7f9d1d7db50c5fd"}}}}}}
