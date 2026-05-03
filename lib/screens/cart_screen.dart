@@ -163,9 +163,10 @@ class CartScreen extends ConsumerWidget {
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () {
-                      AuthWrapper();
-                      //Navigator.pushNamed(context, '/paymentScreen');
-
+                      Navigator.push(
+                          context,
+                            MaterialPageRoute(builder: (_) => AuthWrapper()),
+  );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: primaryColor,

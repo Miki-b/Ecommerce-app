@@ -5,22 +5,16 @@ import 'package:skillbridge_ecommerce_project/screens/main_screen.dart';
 import 'package:skillbridge_ecommerce_project/screens/payment_screen.dart';
 import 'package:skillbridge_ecommerce_project/screens/splash_screen.dart';
 import 'package:skillbridge_ecommerce_project/screens/tabs/home_screen.dart';
+import 'package:skillbridge_ecommerce_project/screens/auth/register_screen.dart';
+import 'package:skillbridge_ecommerce_project/screens/auth/login_screen.dart';
 
 
 void main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(
+  await Firebase.initializeApp();
 
-  );
-
-
-  runApp(
-    ProviderScope(
-      child: MyApp(),
-    ),
-  );
+  runApp(ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -31,12 +25,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      initialRoute : '/',
-      routes:{
-        '/':(context)=> SplashScreen(),
-        '/mainScreen':(context)=> MainScreen(),
-        '/home': (context)=> HomeScreen(),
-        '/paymentScreen' : (context)=> PaymentScreen(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => SplashScreen(),
+        '/mainScreen': (context) => MainScreen(),
+        '/home': (context) => HomeScreen(),
+        '/register': (context) => RegisterScreen(),
+        '/login': (context) => LoginScreen(),
+        '/paymentScreen': (context) => PaymentScreen(),
       },
       debugShowCheckedModeBanner: false,
     );
