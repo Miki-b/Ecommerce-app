@@ -51,7 +51,7 @@ class ProductDetailScreen extends ConsumerWidget {
               borderRadius: BorderRadius.circular(20),
             ),
             child: Image.network(
-              product.images.isNotEmpty ? product.images.first : '',
+              product.productImage.isNotEmpty ? product.productImage : '',
               fit: BoxFit.contain,
               errorBuilder: (context, error, stackTrace) =>
               const Icon(Icons.broken_image, size: 80),
@@ -70,7 +70,7 @@ class ProductDetailScreen extends ConsumerWidget {
                 children: [
                   // Title
                   Text(
-                    product.title,
+                    product.productTitle,
                     style: GoogleFonts.montserrat(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -79,7 +79,7 @@ class ProductDetailScreen extends ConsumerWidget {
                   const SizedBox(height: 10),
                   // Price
                   Text(
-                    "\$${product.price.toStringAsFixed(2)}",
+                    "\$${product.productPrice.toStringAsFixed(2)}",
                     style: GoogleFonts.montserrat(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -101,7 +101,7 @@ class ProductDetailScreen extends ConsumerWidget {
                   Expanded(
                     child: SingleChildScrollView(
                       child: Text(
-                        product.description,
+                        product.productDescription,
                         style: GoogleFonts.montserrat(
                           fontSize: 13,
                           height: 1.5,
@@ -119,11 +119,11 @@ class ProductDetailScreen extends ConsumerWidget {
                       onPressed: () {
                         // Convert Product to CartItem (all fields non‑nullable)
                         final cartItem = CartItem(
-                          productId: product.id.toString(),
-                          productTitle: product.title,
-                          productPrice: product.price,
-                          productImage: product.images.isNotEmpty
-                              ? product.images.first
+                          productId: product.productId.toString(),
+                          productTitle: product.productTitle,
+                          productPrice: product.productPrice,
+                          productImage: product.productImage.isNotEmpty
+                              ? product.productImage
                               : '',
                           quantity: 1,
                         );

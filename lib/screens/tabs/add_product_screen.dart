@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skillbridge_ecommerce_project/controllers/product_provider.dart';
-import 'package:skillbridge_ecommerce_project/models/category_model.dart';
 import 'package:skillbridge_ecommerce_project/models/products_model.dart';
+
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AddProductScreen extends ConsumerStatefulWidget {
   const AddProductScreen({super.key});
@@ -62,21 +62,38 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
 
   Future<void> submitProduct() async {
     if (_formKey.currentState!.validate()) {
-
-
       final product = Product(
         productId: 0,
         productTitle: titleController.text,
         productPrice: double.parse(priceController.text),
         productDescription: descriptionController.text,
-        productCategory: categoryController.text,
+        productCategory: selectedCategory!,
         productImage: imageController.text,
       );
 
-
       await ref.read(productProvider.notifier).addProduct(product);
 
-      // 🔥 Replace with API call
+      if (!mounted) return;
+
+      final addState = ref.read(productProvider);
+      addState.whenOrNull(
+        error: (error, _) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Failed to add product: $error")),
+          );
+        },
+        data: (_) {
+          titleController.clear();
+          priceController.clear();
+          descriptionController.clear();
+          selectedCategory = null;
+          imageController.clear();
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Product added to Firebase")),
+          );
+        },
+      );
     }
   }
 
@@ -127,13 +144,13 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
               ),
               const SizedBox(height: 15),
 
-              /// Category
-              TextFormField(
-                controller: categoryController,
-                decoration: inputStyle("Category"),
-                validator: (value) =>
-                value!.isEmpty ? "Enter category" : null,
-              ),
+              // /// Category
+              // TextFormField(
+              //   controller: categoryController,
+              //   decoration: inputStyle("Category"),
+              //   validator: (value) =>
+              //   value!.isEmpty ? "Enter category" : null,
+              // ),
 
               const SizedBox(height: 15),
 

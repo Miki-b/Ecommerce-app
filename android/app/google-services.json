@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "746798883016",
+    "firebase_url": "https://ecommerce-app-234dd-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "ecommerce-app-234dd",
+    "storage_bucket": "ecommerce-app-234dd.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:746798883016:android:1fc3715b645bbf4f50c5fd",
+        "android_client_info": {
+          "package_name": "com.example.skillbridge_ecommerce_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKiRepPgF5pBR0wkCNaAJfQEITjdLml8o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

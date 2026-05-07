@@ -59,9 +59,9 @@ class HomeScreen extends ConsumerWidget {
                         }
                         ,
                         child: ProductCardWidget(
-                          imagePath: product.images.isNotEmpty ? product.images.first : '',
-                          productName: product.title,
-                          productPrice: product.price,
+                          imagePath: product.productImage.isNotEmpty ? product.productImage : '',
+                          productName: product.productTitle,
+                          productPrice: product.productPrice,
                         ),
                       );
                     },
