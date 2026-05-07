@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/cart_item.dart';
 
+// Simple provider (not using code generation to avoid generator errors)
 final cartProvider = StateNotifierProvider<CartNotifier, List<CartItem>>((ref) {
   return CartNotifier();
 });
@@ -13,12 +14,13 @@ class CartNotifier extends StateNotifier<List<CartItem>> {
           (item) => item.productId == newItem.productId,
     );
     if (existingIndex != -1) {
-      final updated = state[existingIndex].copyWith(
+      // Increase quantity if already in cart
+      final updatedItem = state[existingIndex].copyWith(
         quantity: state[existingIndex].quantity + 1,
       );
       state = [
         ...state.take(existingIndex),
-        updated,
+        updatedItem,
         ...state.skip(existingIndex + 1),
       ];
     } else {
@@ -46,7 +48,9 @@ class CartNotifier extends StateNotifier<List<CartItem>> {
     }
   }
 
-  void clearCart() => state = [];
+  void clearCart() {
+    state = [];
+  }
 
   double get totalPrice {
     return state.fold(0, (sum, item) => sum + (item.productPrice * item.quantity));

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:skillbridge_ecommerce_project/Repostitory/product_repository.dart';
-import 'package:skillbridge_ecommerce_project/components/product_card_widget.dart';
-import 'package:skillbridge_ecommerce_project/controllers/product_provider.dart';
-import 'package:skillbridge_ecommerce_project/models/products_model.dart';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:skillbridge_ecommerce_project/controllers/product_provider.dart';
+import 'package:skillbridge_ecommerce_project/models/category_model.dart';
+import 'package:skillbridge_ecommerce_project/models/products_model.dart';
 
 class AddProductScreen extends ConsumerStatefulWidget {
   const AddProductScreen({super.key});
@@ -21,8 +19,21 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
   final titleController = TextEditingController();
   final priceController = TextEditingController();
   final descriptionController = TextEditingController();
-  final categoryController = TextEditingController();
   final imageController = TextEditingController();
+
+  // Dropdown selected value
+  String? selectedCategory;
+
+  // List of available categories (you can fetch from API or hardcode)
+  final List<String> categoryOptions = [
+    "Electronics",
+    "Clothing",
+    "Books",
+    "Home & Garden",
+    "Sports",
+    "Toys",
+    "Other",
+  ];
 
   final Color primaryColor = const Color(0xFF5AA5D4);
 
@@ -31,7 +42,6 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
     titleController.dispose();
     priceController.dispose();
     descriptionController.dispose();
-    categoryController.dispose();
     imageController.dispose();
     super.dispose();
   }
@@ -50,7 +60,7 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
     );
   }
 
-  void submitProduct() async {
+  Future<void> submitProduct() async {
     if (_formKey.currentState!.validate()) {
 
 
@@ -74,7 +84,6 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFECF3F4),
-
       appBar: AppBar(
         title: Text(
           "Add Product",
@@ -83,44 +92,39 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-
       body: Padding(
         padding: const EdgeInsets.all(15),
         child: Form(
           key: _formKey,
           child: ListView(
             children: [
-
-              /// Title
+              // Title
               TextFormField(
                 controller: titleController,
                 decoration: inputStyle("Product Title"),
                 validator: (value) =>
-                value!.isEmpty ? "Enter product title" : null,
+                value == null || value.isEmpty ? "Enter product title" : null,
               ),
-
               const SizedBox(height: 15),
 
-              /// Price
+              // Price
               TextFormField(
                 controller: priceController,
                 keyboardType: TextInputType.number,
                 decoration: inputStyle("Price"),
                 validator: (value) =>
-                value!.isEmpty ? "Enter price" : null,
+                value == null || value.isEmpty ? "Enter price" : null,
               ),
-
               const SizedBox(height: 15),
 
-              /// Description
+              // Description
               TextFormField(
                 controller: descriptionController,
                 maxLines: 4,
                 decoration: inputStyle("Description"),
                 validator: (value) =>
-                value!.isEmpty ? "Enter description" : null,
+                value == null || value.isEmpty ? "Enter description" : null,
               ),
-
               const SizedBox(height: 15),
 
               /// Category
@@ -133,17 +137,16 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
 
               const SizedBox(height: 15),
 
-              /// Image URL
+              // Image URL
               TextFormField(
                 controller: imageController,
                 decoration: inputStyle("Image URL"),
                 validator: (value) =>
-                value!.isEmpty ? "Enter image URL" : null,
+                value == null || value.isEmpty ? "Enter image URL" : null,
               ),
-
               const SizedBox(height: 25),
 
-              /// Submit Button
+              // Submit Button
               SizedBox(
                 height: 50,
                 child: ElevatedButton(
