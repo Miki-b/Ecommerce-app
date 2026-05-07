@@ -4,9 +4,6 @@ import 'package:skillbridge_ecommerce_project/controllers/product_provider.dart'
 import 'package:skillbridge_ecommerce_project/models/products_model.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:skillbridge_ecommerce_project/controllers/product_provider.dart';
-import 'package:skillbridge_ecommerce_project/models/category_model.dart';
-import 'package:skillbridge_ecommerce_project/models/products_model.dart';
 
 class AddProductScreen extends ConsumerStatefulWidget {
   const AddProductScreen({super.key});
@@ -70,7 +67,7 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
         productTitle: titleController.text,
         productPrice: double.parse(priceController.text),
         productDescription: descriptionController.text,
-        productCategory: categoryController.text,
+        productCategory: selectedCategory!,
         productImage: imageController.text,
       );
 
@@ -89,7 +86,7 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
           titleController.clear();
           priceController.clear();
           descriptionController.clear();
-          categoryController.clear();
+          selectedCategory = null;
           imageController.clear();
 
           ScaffoldMessenger.of(context).showSnackBar(
@@ -147,13 +144,13 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
               ),
               const SizedBox(height: 15),
 
-              /// Category
-              TextFormField(
-                controller: categoryController,
-                decoration: inputStyle("Category"),
-                validator: (value) =>
-                value!.isEmpty ? "Enter category" : null,
-              ),
+              // /// Category
+              // TextFormField(
+              //   controller: categoryController,
+              //   decoration: inputStyle("Category"),
+              //   validator: (value) =>
+              //   value!.isEmpty ? "Enter category" : null,
+              // ),
 
               const SizedBox(height: 15),
 
