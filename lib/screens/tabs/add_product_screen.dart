@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:skillbridge_ecommerce_project/controllers/product_provider.dart';
+import 'package:skillbridge_ecommerce_project/models/products_model.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skillbridge_ecommerce_project/controllers/product_provider.dart';
 import 'package:skillbridge_ecommerce_project/models/category_model.dart';
@@ -62,8 +65,6 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
 
   Future<void> submitProduct() async {
     if (_formKey.currentState!.validate()) {
-
-
       final product = Product(
         productId: 0,
         productTitle: titleController.text,
@@ -73,10 +74,29 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
         productImage: imageController.text,
       );
 
-
       await ref.read(productProvider.notifier).addProduct(product);
 
-      // 🔥 Replace with API call
+      if (!mounted) return;
+
+      final addState = ref.read(productProvider);
+      addState.whenOrNull(
+        error: (error, _) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Failed to add product: $error")),
+          );
+        },
+        data: (_) {
+          titleController.clear();
+          priceController.clear();
+          descriptionController.clear();
+          categoryController.clear();
+          imageController.clear();
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Product added to Firebase")),
+          );
+        },
+      );
     }
   }
 
