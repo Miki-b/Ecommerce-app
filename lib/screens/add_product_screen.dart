@@ -13,6 +13,7 @@ class AddProductScreen extends ConsumerStatefulWidget {
 }
 
 class _AddProductScreenState extends ConsumerState<AddProductScreen> {
+
   final _formKey = GlobalKey<FormState>();
 
   final titleController = TextEditingController();
@@ -61,34 +62,21 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
 
   Future<void> submitProduct() async {
     if (_formKey.currentState!.validate()) {
-      if (selectedCategory == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Please select a category")),
-        );
-        return;
-      }
 
-      // final product = Product(
-      //   id: 0, // Will be assigned by backend
-      //   title: titleController.text,
-      //   price: double.parse(priceController.text),
-      //   description: descriptionController.text,
-      //   images: [imageController.text],
-      //   category: Category(id: 0, name: selectedCategory!, image: ''), // if Category expects id, name, image
-      //   updatedAt: null,
-      //   creationAt: null,
-      // );
 
-      // Call the provider to add product
-      // await ref.read(productProvider.notifier).addProduct(product);
+      final product = Product(
+        productId: 0,
+        productTitle: titleController.text,
+        productPrice: double.parse(priceController.text),
+        productDescription: descriptionController.text,
+        productCategory: categoryController.text,
+        productImage: imageController.text,
+      );
 
-      // Show success and go back
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Product added successfully!")),
-        );
-        Navigator.pop(context);
-      }
+
+      await ref.read(productProvider.notifier).addProduct(product);
+
+      // 🔥 Replace with API call
     }
   }
 
@@ -139,36 +127,14 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
               ),
               const SizedBox(height: 15),
 
-              // Category Dropdown (replaces the old TextFormField)
-              DropdownButtonFormField<String>(
-                value: selectedCategory,
-                hint: Text("Select Category", style: GoogleFonts.montserrat()),
-                items: categoryOptions.map((category) {
-                  return DropdownMenuItem<String>(
-                    value: category,
-                    child: Text(category, style: GoogleFonts.montserrat()),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    selectedCategory = value;
-                  });
-                },
+              /// Category
+              TextFormField(
+                controller: categoryController,
+                decoration: inputStyle("Category"),
                 validator: (value) =>
-                value == null ? "Please select a category" : null,
-                decoration: InputDecoration(
-                  labelText: "Category",
-                  labelStyle: GoogleFonts.montserrat(),
-                  filled: true,
-                  fillColor: Colors.white,
-                  contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(14),
-                    borderSide: BorderSide.none,
-                  ),
-                ),
+                value!.isEmpty ? "Enter category" : null,
               ),
+
               const SizedBox(height: 15),
 
               // Image URL
@@ -195,9 +161,9 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
                   child: Text(
                     "Add Product",
                     style: GoogleFonts.montserrat(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                      color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                        color: Colors.white
                     ),
                   ),
                 ),
